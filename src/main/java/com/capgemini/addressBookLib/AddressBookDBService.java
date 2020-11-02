@@ -3,6 +3,7 @@ package com.capgemini.addressBookLib;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -62,4 +63,60 @@ public class AddressBookDBService {
 		return con;
 	}
 
+	public List<AddressBookContacts> getContactData(String firstname) {
+		try (Connection connection = this.getConnection()) {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"select * from contact,addressBook where firstName=? and addressBook.contactid = contact.contactid;");
+			preparedStatement.setString(1, firstname);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			return getContactData(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<AddressBookContacts> getContactData(ResultSet resultSet) {
+		List<AddressBookContacts> contactList = new ArrayList<>();
+
+		try {
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id");
+				String firstName = resultSet.getString("firstName");
+				String lastName = resultSet.getString("lastName");
+				String address = resultSet.getString("address");
+				String city = resultSet.getString("city");
+				String state = resultSet.getString("state");
+				int zip = resultSet.getInt("zip");
+				String phoneNumber = resultSet.getString("phoneNumber");
+				String email = resultSet.getString("email");
+				String addressBookName = resultSet.getString("addressBookName");
+				String addressBookType = resultSet.getString("addressBookType");
+				AddressBookContacts contact = new AddressBookContacts(firstName, lastName, address, city, state, zip,
+						phoneNumber, email, addressBookName, addressBookType);
+				contactList.add(contact);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contactList;
+
+	}
+
+	public int updateAddressBook(String firstName, String ph_no) throws AddressBookException {
+		return this.updateAddressBookDataUsingPreparedStatement(firstName, ph_no);
+	}
+
+	private int updateAddressBookDataUsingPreparedStatement(String firstName, String ph_no)
+			throws AddressBookException {
+		try {
+			Connection connection = this.getConnection();
+			String sql = String.format("UPDATE contact SET phoneNumber ='%s' WHERE firstname='%s' ;", firstName, ph_no);
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			return preparedStatement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AddressBookException("unable to create prepared statement");
+		}
+	}
 }

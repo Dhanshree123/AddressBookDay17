@@ -259,4 +259,24 @@ public class AddressBook {
 		addressBookList = addressBookDBService.readData();
 		return addressBookList;
 	}
+
+	public boolean checkAddressBookDataInSyncWithDB(String firstName) {
+		List<AddressBookContacts> contactList = addressBookDBService.getContactData(firstName);
+		return contactList.get(0).equals(getContactData(firstName));
+	}
+
+	private AddressBookContacts getContactData(String firstName) {
+
+		return this.addressBookList.stream().filter(i -> i.getFirstName().equals(firstName)).findFirst().orElse(null);
+	}
+
+	public void updateContact(String firstName, String ph_no) throws AddressBookException {
+		int result = addressBookDBService.updateAddressBook(firstName, ph_no);
+		if (result == 0)
+			return;
+		AddressBookContacts addressBookContacts = this.getContactData(firstName);
+		if (addressBookContacts != null)
+			addressBookContacts.ph_no = ph_no;
+
+	}
 }
