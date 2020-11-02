@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -278,5 +279,9 @@ public class AddressBook {
 		if (addressBookContacts != null)
 			addressBookContacts.ph_no = ph_no;
 
+	}
+
+	public List<AddressBookContacts> getInDateRange(LocalDate startDate, LocalDate endDate) {
+		return addressBookDBService.getContactInRange(startDate, endDate);
 	}
 }

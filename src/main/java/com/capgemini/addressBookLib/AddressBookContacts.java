@@ -1,5 +1,7 @@
 package com.capgemini.addressBookLib;
 
+import java.time.LocalDate;
+
 import com.opencsv.bean.CsvBindByName;
 
 public class AddressBookContacts {
@@ -30,6 +32,8 @@ public class AddressBookContacts {
 	public String addressBookName;
 	public String addressBookType;
 
+	public LocalDate addedDate;
+
 	public AddressBookContacts() {
 
 	}
@@ -53,6 +57,12 @@ public class AddressBookContacts {
 		this.addressBookName = addressBookName;
 		this.addressBookType = addressBookType;
 
+	}
+
+	public AddressBookContacts(String firstName, String lastName, String address, String city, String state, int zip,
+			String ph_no, String email, LocalDate addedDate) {
+		this(firstName, lastName, address, city, state, zip, ph_no, email);
+		this.addedDate = addedDate;
 	}
 
 	public String getFirstName() {
