@@ -284,4 +284,12 @@ public class AddressBook {
 	public List<AddressBookContacts> getInDateRange(LocalDate startDate, LocalDate endDate) {
 		return addressBookDBService.getContactInRange(startDate, endDate);
 	}
+
+	public int getContactsByCity(String city) {
+		return addressBookDBService.getContactByCity(city);
+	}
+
+	public int getContactsByState(String state) {
+		return addressBookDBService.getContactByState(state);
+	}
 }

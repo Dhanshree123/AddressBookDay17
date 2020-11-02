@@ -36,4 +36,13 @@ public class AddressBookTest {
 		System.out.println("Number of entries:- " + list.size());
 		Assert.assertEquals(4, list.size());
 	}
+
+	@Test
+	public void givenCityAndState_whenRetrieved_ShouldMatchEmployeeCount() {
+		AddressBook addressBook = new AddressBook();
+		int cityCount = addressBook.getContactsByCity("c");
+		int stateCount = addressBook.getContactsByState("s");
+		Assert.assertEquals(5, cityCount);
+		Assert.assertEquals(5, stateCount);
+	}
 }

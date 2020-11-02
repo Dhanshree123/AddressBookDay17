@@ -148,4 +148,36 @@ public class AddressBookDBService {
 		}
 		return addressBookContactsList;
 	}
+
+	public int getContactByCity(String city) {
+		String sql = String.format("SELECT * FROM contact WHERE city = '%s';", city);
+		int count = 0;
+		List<AddressBookContacts> addressBookContactsList = new ArrayList<>();
+		try (Connection connection = this.getConnection();) {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				count++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	public int getContactByState(String state) {
+		String sql = String.format("SELECT * FROM contact WHERE state = '%s';", state);
+		int count = 0;
+		List<AddressBookContacts> addressBookContactsList = new ArrayList<>();
+		try (Connection connection = this.getConnection();) {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				count++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 }
