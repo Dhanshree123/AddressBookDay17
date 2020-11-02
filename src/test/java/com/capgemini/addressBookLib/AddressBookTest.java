@@ -20,7 +20,6 @@ public class AddressBookTest {
 	@Test
 	public void givenContactName_WhenUpdated_ShouldSyncWithDB() throws AddressBookException {
 		AddressBook addressBook = new AddressBook();
-		addressBook.readAddressBookData();
 		addressBook.updateContact("Mini", "9876543210");
 		boolean ans = addressBook.checkAddressBookDataInSyncWithDB("Mini");
 		Assert.assertTrue(ans);
@@ -44,5 +43,15 @@ public class AddressBookTest {
 		int stateCount = addressBook.getContactsByState("s");
 		Assert.assertEquals(5, cityCount);
 		Assert.assertEquals(5, stateCount);
+	}
+
+	@Test
+	public void givenData_whenAdded_ShouldMatchEmployeeCount() {
+		AddressBook addressBook = new AddressBook();
+		addressBook.readAddressBookData();
+		addressBook.addContactToAddressBook("Mini", "Kumar", "a", "c", "s", 123456, "9090909090", "kk@gmail.com",
+				"office", "office1");
+		boolean result = addressBook.checkAddressBookDataInSyncWithDB("Mini");
+		Assert.assertTrue(result);
 	}
 }
