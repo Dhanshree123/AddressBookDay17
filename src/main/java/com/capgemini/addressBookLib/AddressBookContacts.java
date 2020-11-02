@@ -27,6 +27,9 @@ public class AddressBookContacts {
 	@CsvBindByName
 	public String email;
 
+	public String addressBookName;
+	public String addressBookType;
+
 	public AddressBookContacts() {
 
 	}
@@ -41,6 +44,14 @@ public class AddressBookContacts {
 		this.zip = zip;
 		this.ph_no = ph_no;
 		this.email = email;
+
+	}
+
+	public AddressBookContacts(String firstName, String lastName, String address, String city, String state, int zip,
+			String ph_no, String email, String addressBookName, String addressBookType) {
+		this(firstName, lastName, address, city, state, zip, ph_no, email);
+		this.addressBookName = addressBookName;
+		this.addressBookType = addressBookType;
 
 	}
 
@@ -106,6 +117,22 @@ public class AddressBookContacts {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getAddressBookName() {
+		return addressBookName;
+	}
+
+	public void setAddressBookName(String addressBookName) {
+		this.addressBookName = addressBookName;
+	}
+
+	public String getAddressBookType() {
+		return addressBookType;
+	}
+
+	public void setAddressBookType(String addressBookType) {
+		this.addressBookType = addressBookType;
 	}
 
 	public boolean equals(Object obj) {

@@ -1,6 +1,7 @@
 package com.capgemini.addressBookLib;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,18 +39,27 @@ public class AddressBook {
 	Scanner sc = new Scanner(System.in);
 
 	ArrayList<AddressBookContacts> list;
+	private List<AddressBookContacts> addressBookList;
+	private AddressBookDBService addressBookDBService;
+
+	public AddressBook(String addressBookName) throws IOException {
+		this();
+		this.addressBookName = addressBookName;
+		addressBookDBService = AddressBookDBService.getInstance();
+	}
 
 	public AddressBook() {
 		list = new ArrayList<AddressBookContacts>();
+		addressBookDBService = AddressBookDBService.getInstance();
 
 	}
 
-	public AddressBook(String addressBookName) {
-		list = new ArrayList<AddressBookContacts>();
-		this.addressBookName = addressBookName;
-
-	}
-
+	/*
+	 * public AddressBook(String addressBookName) { list = new
+	 * ArrayList<AddressBookContacts>(); this.addressBookName = addressBookName;
+	 * 
+	 * }
+	 */
 	public AddressBookContacts create(String firstName, String lastName, String address, String city, String state,
 			int zip, String ph_no, String email) {
 
@@ -243,5 +253,10 @@ public class AddressBook {
 			System.out.println("Email : " + a.email);
 			System.out.println("**********************************");
 		}
+	}
+
+	public List<AddressBookContacts> readAddressBookData() {
+		addressBookList = addressBookDBService.readData();
+		return addressBookList;
 	}
 }
