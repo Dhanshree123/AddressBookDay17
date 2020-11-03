@@ -299,4 +299,35 @@ public class AddressBook {
 				addressBookName);
 
 	}
+
+	public void addMultipleAddressContacts(List<AddressBookContacts> contacts) {
+		Map<Integer, Boolean> contactAdditionStatus = new HashMap<Integer, Boolean>();
+		contacts.forEach(contact -> {
+			Runnable task = () -> {
+				contactAdditionStatus.put(contact.hashCode(), false);
+				System.out.println("Contact Being Added: " + Thread.currentThread().getName());
+				try {
+					this.addContactToAddressBook(contact.firstName, contact.lastName, contact.address, contact.city,
+							contact.state, contact.zip, contact.ph_no, contact.email, contact.addressBookType,
+							contact.addressBookName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				contactAdditionStatus.put(contact.hashCode(), true);
+				System.out.println("Contact Added" + Thread.currentThread().getName());
+
+			};
+			Thread thread = new Thread(task, contact.getFirstName());
+			thread.start();
+		});
+		while (contactAdditionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(this.addressBookList);
+	}
+
 }
