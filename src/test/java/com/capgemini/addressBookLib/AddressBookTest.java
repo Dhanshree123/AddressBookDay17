@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 public class AddressBookTest {
 
@@ -97,6 +98,36 @@ public class AddressBookTest {
 		AddressBook addressBook = new AddressBook(Arrays.asList(contactList));
 		int entries = addressBook.countEntries();
 		Assert.assertEquals(11, entries);
+	}
+
+	@Test
+	public void givenMultipleContactData_WhenAddedToJsonServer_ShouldMatchSize() throws IOException {
+		AddressBookContacts[] contactsArray = getContactList();
+		AddressBook addressBook = new AddressBook(Arrays.asList(contactsArray));
+		LocalDate dateAdded = LocalDate.now();
+		AddressBookContacts[] contacts = {
+				new AddressBookContacts("A", "B", "Street1", "ca", "sa", 444444, "9098979695", "ab@gmail.com",
+						LocalDate.parse("2019-01-02")),
+				new AddressBookContacts("C", "D", "Street2", "ca", "sa", 444444, "8898979695", "cd@gmail.com",
+						LocalDate.parse("2019-01-03")) };
+		for (int i = 0; i < contacts.length; i++) {
+			Response response = addContactToJsonServer(contacts[i]);
+			int statusCode = response.getStatusCode();
+			Assert.assertEquals(201, statusCode);
+
+			contacts[i] = new Gson().fromJson(response.asString(), AddressBookContacts.class);
+			addressBook.addContact(contacts[i]);
+		}
+		long entries = addressBook.countEntries();
+		Assert.assertEquals(19, entries);
+	}
+
+	private Response addContactToJsonServer(AddressBookContacts contact) {
+		String jsonContact = new Gson().toJson(contact);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(jsonContact);
+		return request.post("/contact");
 	}
 
 }

@@ -337,4 +337,9 @@ public class AddressBook {
 		return this.addressBookList.size();
 	}
 
+	public void addContact(AddressBookContacts addressBookContact) {
+		this.addressBookList.add(addressBookContact);
+
+	}
+
 }
