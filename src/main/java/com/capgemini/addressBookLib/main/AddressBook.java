@@ -1,4 +1,4 @@
-package com.capgemini.addressBookLib;
+package com.capgemini.addressBookLib.main;
 
 import java.io.BufferedReader;
 
@@ -18,6 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import com.capgemini.addressBookLib.dBFiles.AddressBookDBService;
+import com.capgemini.addressBookLib.exception.AddressBookException;
 import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -55,12 +58,11 @@ public class AddressBook {
 
 	}
 
-	/*
-	 * public AddressBook(String addressBookName) { list = new
-	 * ArrayList<AddressBookContacts>(); this.addressBookName = addressBookName;
-	 * 
-	 * }
-	 */
+	public AddressBook(List<AddressBookContacts> asList) {
+		this();
+		this.addressBookList = new ArrayList<>(asList);
+	}
+
 	public AddressBookContacts create(String firstName, String lastName, String address, String city, String state,
 			int zip, String ph_no, String email) {
 
@@ -208,7 +210,7 @@ public class AddressBook {
 				System.out.println("City : " + contact.city);
 				System.out.println("State : " + contact.state);
 				System.out.println("Zip : " + contact.zip);
-				System.out.println("Phone number : " + contact.ph_no);
+				System.out.println("Phone number : " + contact.phoneNumber);
 				System.out.println("Email : " + contact.email);
 				System.out.println("**********************************");
 			}
@@ -250,7 +252,7 @@ public class AddressBook {
 			System.out.println("City : " + a.city);
 			System.out.println("State : " + a.state);
 			System.out.println("Zip : " + a.zip);
-			System.out.println("Phone number : " + a.ph_no);
+			System.out.println("Phone number : " + a.phoneNumber);
 			System.out.println("Email : " + a.email);
 			System.out.println("**********************************");
 		}
@@ -271,13 +273,13 @@ public class AddressBook {
 		return this.addressBookList.stream().filter(i -> i.getFirstName().equals(firstName)).findFirst().orElse(null);
 	}
 
-	public void updateContact(String firstName, String ph_no) throws AddressBookException {
-		int result = addressBookDBService.updateAddressBook(firstName, ph_no);
+	public void updateContact(String firstName, String phoneNumber) throws AddressBookException {
+		int result = addressBookDBService.updateAddressBook(firstName, phoneNumber);
 		if (result == 0)
 			return;
 		AddressBookContacts addressBookContacts = this.getContactData(firstName);
 		if (addressBookContacts != null)
-			addressBookContacts.ph_no = ph_no;
+			addressBookContacts.phoneNumber = phoneNumber;
 
 	}
 
@@ -308,7 +310,7 @@ public class AddressBook {
 				System.out.println("Contact Being Added: " + Thread.currentThread().getName());
 				try {
 					this.addContactToAddressBook(contact.firstName, contact.lastName, contact.address, contact.city,
-							contact.state, contact.zip, contact.ph_no, contact.email, contact.addressBookType,
+							contact.state, contact.zip, contact.phoneNumber, contact.email, contact.addressBookType,
 							contact.addressBookName);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -328,6 +330,11 @@ public class AddressBook {
 			}
 		}
 		System.out.println(this.addressBookList);
+	}
+
+	public int countEntries() {
+		System.out.println(addressBookList.size());
+		return this.addressBookList.size();
 	}
 
 }

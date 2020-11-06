@@ -1,4 +1,4 @@
-package com.capgemini.addressBookLib;
+package com.capgemini.addressBookLib.main;
 
 import java.io.IOException;
 import java.util.Map;

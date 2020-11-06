@@ -1,4 +1,4 @@
-package com.capgemini.addressBookLib;
+package com.capgemini.addressBookLib.dBFiles;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
+import com.capgemini.addressBookLib.exception.AddressBookException;
+import com.capgemini.addressBookLib.main.AddressBookContacts;
 
 public class AddressBookDBService {
 	private static AddressBookDBService addressBookDBService = null;
@@ -41,12 +44,12 @@ public class AddressBookDBService {
 				String city = resultSet.getString("city");
 				String state = resultSet.getString("state");
 				int zip = resultSet.getInt("zip");
-				String ph_no = resultSet.getString("phoneNumber");
+				String phoneNumber = resultSet.getString("phoneNumber");
 				String email = resultSet.getString("email");
 				String addressBookName = resultSet.getString("addressBookName");
 				String addressBookType = resultSet.getString("addressBookType");
 				addressBookContactsList.add(new AddressBookContacts(firstName, lastName, address, city, state, zip,
-						ph_no, email, addressBookName, addressBookType));
+						phoneNumber, email, addressBookName, addressBookType));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,7 +86,7 @@ public class AddressBookDBService {
 
 		try {
 			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
+				int id = resultSet.getInt("contactid");
 				String firstName = resultSet.getString("firstName");
 				String lastName = resultSet.getString("lastName");
 				String address = resultSet.getString("address");
@@ -137,11 +140,11 @@ public class AddressBookDBService {
 				String city = resultSet.getString("city");
 				String state = resultSet.getString("state");
 				int zip = resultSet.getInt("zip");
-				String ph_no = resultSet.getString("phoneNumber");
+				String phoneNumber = resultSet.getString("phoneNumber");
 				String email = resultSet.getString("email");
 				LocalDate addedDate = resultSet.getDate("dateAdded").toLocalDate();
 				addressBookContactsList.add(new AddressBookContacts(firstName, lastName, address, city, state, zip,
-						ph_no, email, addedDate));
+						phoneNumber, email, addedDate));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -152,7 +155,6 @@ public class AddressBookDBService {
 	public int getContactByCity(String city) {
 		String sql = String.format("SELECT * FROM contact WHERE city = '%s';", city);
 		int count = 0;
-		List<AddressBookContacts> addressBookContactsList = new ArrayList<>();
 		try (Connection connection = this.getConnection();) {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
@@ -168,7 +170,6 @@ public class AddressBookDBService {
 	public int getContactByState(String state) {
 		String sql = String.format("SELECT * FROM contact WHERE state = '%s';", state);
 		int count = 0;
-		List<AddressBookContacts> addressBookContactsList = new ArrayList<>();
 		try (Connection connection = this.getConnection();) {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);

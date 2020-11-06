@@ -1,4 +1,4 @@
-package com.capgemini.addressBookLib;
+package com.capgemini.addressBookLib.main;
 
 import java.time.LocalDate;
 
@@ -24,7 +24,7 @@ public class AddressBookContacts {
 	public int zip;
 
 	@CsvBindByName
-	public String ph_no;
+	public String phoneNumber;
 
 	@CsvBindByName
 	public String email;
@@ -39,29 +39,29 @@ public class AddressBookContacts {
 	}
 
 	public AddressBookContacts(String firstName, String lastName, String address, String city, String state, int zip,
-			String ph_no, String email) {
+			String phoneNumber, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
-		this.ph_no = ph_no;
+		this.phoneNumber = phoneNumber;
 		this.email = email;
 
 	}
 
 	public AddressBookContacts(String firstName, String lastName, String address, String city, String state, int zip,
-			String ph_no, String email, String addressBookName, String addressBookType) {
-		this(firstName, lastName, address, city, state, zip, ph_no, email);
+			String phoneNumber, String email, String addressBookName, String addressBookType) {
+		this(firstName, lastName, address, city, state, zip, phoneNumber, email);
 		this.addressBookName = addressBookName;
 		this.addressBookType = addressBookType;
 
 	}
 
 	public AddressBookContacts(String firstName, String lastName, String address, String city, String state, int zip,
-			String ph_no, String email, LocalDate addedDate) {
-		this(firstName, lastName, address, city, state, zip, ph_no, email);
+			String phoneNumber, String email, LocalDate addedDate) {
+		this(firstName, lastName, address, city, state, zip, phoneNumber, email);
 		this.addedDate = addedDate;
 	}
 
@@ -113,12 +113,12 @@ public class AddressBookContacts {
 		this.zip = zip;
 	}
 
-	public String getPh_no() {
-		return ph_no;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setPh_no(String ph_no) {
-		this.ph_no = ph_no;
+	public void setPh_no(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public String getEmail() {
@@ -164,6 +164,6 @@ public class AddressBookContacts {
 
 	public String toString() {
 		return "First name : " + firstName + " ,Last name : " + lastName + " ,Address : " + address + " ,City : " + city
-				+ " ,State : " + state + " ,Zip : " + zip + " ,Phone num : " + ph_no + " ,Email : " + email;
+				+ " ,State : " + state + " ,Zip : " + zip + " ,Phone num : " + phoneNumber + " ,Email : " + email;
 	}
 }

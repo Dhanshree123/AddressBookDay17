@@ -1,4 +1,4 @@
-package com.capgemini.addressBookLib;
+package com.capgemini.addressBookLib.exception;
 
 public class AddressBookException extends Exception {
 	public AddressBookException(String msg) {

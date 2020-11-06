@@ -1,14 +1,36 @@
 package com.capgemini.addressBookLib;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
-
+import org.junit.Before;
 import org.junit.Test;
 
+import com.capgemini.addressBookLib.exception.AddressBookException;
+import com.capgemini.addressBookLib.main.AddressBook;
+import com.capgemini.addressBookLib.main.AddressBookContacts;
+import com.google.gson.Gson;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+
 public class AddressBookTest {
+
+	@Before
+	public void setUp() throws IOException {
+		RestAssured.baseURI = "http://localhost";
+		RestAssured.port = 3000;
+	}
+
+	public AddressBookContacts[] getContactList() {
+		Response response = RestAssured.get("/contact");
+		System.out.println("Jsonserver Data:\n" + response.asString());
+		AddressBookContacts[] contacts = new Gson().fromJson(response.asString(), AddressBookContacts[].class);
+		return contacts;
+	}
 
 	@Test
 	public void givenAddressBookInDB_whenRetrieved_ShouldMatchEmployeeCount() {
@@ -68,4 +90,13 @@ public class AddressBookTest {
 		long entries = addressBook.readAddressBookData().size();
 		Assert.assertEquals(9, entries);
 	}
+
+	@Test
+	public void givenContactDataInJsonServer_whenRetreived_shouldMatchCount() throws IOException {
+		AddressBookContacts[] contactList = getContactList();
+		AddressBook addressBook = new AddressBook(Arrays.asList(contactList));
+		int entries = addressBook.countEntries();
+		Assert.assertEquals(11, entries);
+	}
+
 }
