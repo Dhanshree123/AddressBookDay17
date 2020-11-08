@@ -117,7 +117,7 @@ public class AddressBookContacts {
 		return phoneNumber;
 	}
 
-	public void setPh_no(String phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 

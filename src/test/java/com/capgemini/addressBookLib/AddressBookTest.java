@@ -1,7 +1,9 @@
 package com.capgemini.addressBookLib;
 
 import java.io.IOException;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,7 +106,6 @@ public class AddressBookTest {
 	public void givenMultipleContactData_WhenAddedToJsonServer_ShouldMatchSize() throws IOException {
 		AddressBookContacts[] contactsArray = getContactList();
 		AddressBook addressBook = new AddressBook(Arrays.asList(contactsArray));
-		LocalDate dateAdded = LocalDate.now();
 		AddressBookContacts[] contacts = {
 				new AddressBookContacts("A", "B", "Street1", "ca", "sa", 444444, "9098979695", "ab@gmail.com",
 						LocalDate.parse("2019-01-02")),
@@ -130,4 +131,36 @@ public class AddressBookTest {
 		return request.post("/contact");
 	}
 
+	@Test
+	public void givenNewPhoneNumberForContact_WhenUpdated_ShouldMatch200Response() throws IOException {
+		AddressBookContacts[] contactsArray = getContactList();
+		AddressBook addressBook = new AddressBook(Arrays.asList(contactsArray));
+		addressBook.updateContactPhoneNumber("A", "B", "9098979699");
+		AddressBookContacts contact = addressBook.getContact("A", "B");
+		String contactJson = new Gson().toJson(contact);
+
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(contactJson);
+		Response response = request.put("/contact/" + contact.phoneNumber);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+	}
+	/*
+	 * @Test public void
+	 * givenContactToDelete_WhenDeleted_ShouldMatch200ResponseAndCount() throws
+	 * IOException { AddressBookContacts[] contactsArray = getContactList();
+	 * List<AddressBookContacts> contactList = new
+	 * ArrayList<AddressBookContacts>(Arrays.asList(contactsArray)); AddressBook
+	 * addressBook = new AddressBook(contactList); AddressBookContacts contact =
+	 * addressBook.getContact("A", "B"); String contactJson = new
+	 * Gson().toJson(contact);
+	 * 
+	 * RequestSpecification request = RestAssured.given();
+	 * request.header("Content-Type", "application/json");
+	 * request.body(contactJson); Response response = request.delete("/contact/" +
+	 * contact.firstName); int statusCode = response.getStatusCode();
+	 * Assert.assertEquals(200, statusCode); long entries =
+	 * addressBook.countEntries(); Assert.assertEquals(17, entries); }
+	 */
 }

@@ -147,7 +147,7 @@ public class AddressBook {
 
 			case 6:
 				System.out.println("Enter Phone Number for editing");
-				list.get(pos).setPh_no(sc.next());
+				list.get(pos).setPhoneNumber(sc.next());
 				break;
 
 			case 7:
@@ -339,6 +339,31 @@ public class AddressBook {
 
 	public void addContact(AddressBookContacts addressBookContact) {
 		this.addressBookList.add(addressBookContact);
+
+	}
+
+	public AddressBookContacts getContact(String firstName, String lastName) {
+		return this.addressBookList.stream()
+				.filter(contact -> contact.getFirstName().equals(firstName) && contact.getLastName().equals(lastName))
+				.findFirst().orElse(null);
+	}
+
+	public void updateContactPhoneNumber(String firstName, String lastName, String phoneNumber) {
+		for (int i = 0; i < addressBookList.size(); i++) {
+			AddressBookContacts contact = addressBookList.get(i);
+			if (contact.getFirstName() != null && contact.getLastName() != null
+					&& contact.getFirstName().equals(firstName) && contact.getLastName().equals(lastName))
+				contact.setPhoneNumber(phoneNumber);
+		}
+	}
+
+	public void deleteContact(String firstName, String lastName) {
+		for (int i = 0; i < addressBookList.size(); i++) {
+			if (addressBookList.get(i).getFirstName().equals(firstName)) {
+				addressBookList.remove(i);
+			}
+		}
+		return;
 
 	}
 
