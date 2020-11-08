@@ -146,21 +146,23 @@ public class AddressBookTest {
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
 	}
-	/*
-	 * @Test public void
-	 * givenContactToDelete_WhenDeleted_ShouldMatch200ResponseAndCount() throws
-	 * IOException { AddressBookContacts[] contactsArray = getContactList();
-	 * List<AddressBookContacts> contactList = new
-	 * ArrayList<AddressBookContacts>(Arrays.asList(contactsArray)); AddressBook
-	 * addressBook = new AddressBook(contactList); AddressBookContacts contact =
-	 * addressBook.getContact("A", "B"); String contactJson = new
-	 * Gson().toJson(contact);
-	 * 
-	 * RequestSpecification request = RestAssured.given();
-	 * request.header("Content-Type", "application/json");
-	 * request.body(contactJson); Response response = request.delete("/contact/" +
-	 * contact.firstName); int statusCode = response.getStatusCode();
-	 * Assert.assertEquals(200, statusCode); long entries =
-	 * addressBook.countEntries(); Assert.assertEquals(17, entries); }
-	 */
+
+	@Test
+	public void givenContactToDelete_WhenDeleted_ShouldMatch200ResponseAndCount() throws IOException {
+		AddressBookContacts[] contactsArray = getContactList();
+		List<AddressBookContacts> contactList = new ArrayList<AddressBookContacts>(Arrays.asList(contactsArray));
+		AddressBook addressBook = new AddressBook(contactList);
+		AddressBookContacts contact = addressBook.getContact("A", "B");
+		String contactJson = new Gson().toJson(contact);
+
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(contactJson);
+		Response response = request.delete("/contact/" + contact.firstName);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+		long entries = addressBook.countEntries();
+		Assert.assertEquals(17, entries);
+	}
+
 }
